@@ -1,40 +1,35 @@
-// 去除banner
-var full_page = document.getElementsByClassName("full_page");
-if (full_page.length != 0) {
-  full_page[0].style.background = "transparent";
-}
-
-// 手机侧边栏默认不展开
-var mobile_sidebar_menus = document.getElementById("mobile-sidebar-menus");
-var menus_item_child = mobile_sidebar_menus.getElementsByClassName(
-  "menus_item_child"
-);
-var menus_expand = mobile_sidebar_menus.getElementsByClassName("menus-expand");
-for (var i = 0; i < menus_item_child.length; i++) {
-  menus_item_child[i].style.display = "none";
-  menus_expand[i].className += " menus-closed";
-}
-
-// 浏览器搞笑标题
-var OriginTitle = document.title;
-var titleTime;
-document.addEventListener("visibilitychange", function () {
-  if (document.hidden) {
-    $('[rel="icon"]').attr("href", "/funny.ico");
-    document.title = "ヽ(●-`Д´-)ノ你要走嘛我好伤心！";
-    clearTimeout(titleTime);
-  } else {
-    $('[rel="icon"]').attr("href", "/favicon.ico");
-    document.title = "(Ő∀Ő3)ノ哇喔！欢迎！" + OriginTitle;
-    titleTime = setTimeout(function () {
-      document.title = OriginTitle;
-    }, 2000);
+/* eslint-disable */
+(function ($) {
+  "use strict";
+  function setTabs() {
+    const $tabs = $(".tabs");
+    if ($tabs.length === 0) return;
+    let $navs = $tabs.find(".nav-tabs .tab");
+    for (var i = 0; i < $navs.length; i++) {
+      let $a = $tabs.find($navs[i].children[0]);
+      $a.addClass($a.attr("href"));
+      $a.removeAttr("href");
+    }
+    $(".tabs .nav-tabs").on("click", "a", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      let $tab = $(e.target.parentElement.parentElement.parentElement);
+      $tab.find(".nav-tabs .active").removeClass("active");
+      $tab.find(e.target.parentElement).addClass("active");
+      $tab.find(".tab-content .active").removeClass("active");
+      $tab.find($(e.target).attr("class")).addClass("active");
+      return false;
+    });
   }
-});
 
-// 添加八毛卡通人物
-/*右下角添加卡通人物*/
-var bamao =
-  '<i class="fas fa-arrow-up" style ="padding:8px" ></i><img style="max-width: 234%;transform: translate(-65px,-65px);" src="https://cdn.jsdelivr.net/gh/fudalijunyi/picture-bed/img/20200629182853.gif" title="回到顶部" data-ll-status="loaded" class="loaded">';
-/*添加到返回顶部按钮下*/
-document.getElementById("go-up").innerHTML = bamao;
+  $(function () {
+    setTabs();
+    // $(".article .video-container").fitVids();
+    $(".scroll-down").on("click", function () {
+      scrolltoElement(".l_body");
+    });
+    setTimeout(function () {
+      $("#loading-bar-wrapper").fadeOut(500);
+    }, 300);
+  });
+})(jQuery);
