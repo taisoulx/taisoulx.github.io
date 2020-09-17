@@ -5,7 +5,7 @@
 
 /* 取消页脚背景 */
 #footer {
-  background: none;
+  background: none !important;
 }
 
 /* 取消banner背景 */
